@@ -84,8 +84,8 @@ Create a .env file in the root directory of your project, and fill in the follow
 - For Polygon Mainnet: `npx truffle migrate --reset --network matic`
 
 ### 3. Verify your contracts
-- For Goerli testnet: `npx truffle run verify OpenPunks --network goerli`
-- For Polygon Mainnet: `npx truffle run verify OpenPunks --network matic`
+- For Goerli testnet: `npx truffle run verify FunkyCats --network goerli`
+- For Polygon Mainnet: `npx truffle run verify FunkyCats --network matic`
 
 ## Preparing for Frontend Deployment
 ### 1. Create or Login to your GitHub account

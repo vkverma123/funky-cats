@@ -14,14 +14,15 @@ import '../App.css'
 import Navbar from './Navbar'
 
 // Import ABI + Config
-import OpenPunks from '../abis/OpenPunks.json'
+import FunkyCats from '../abis/FunkyCats.json'
 import config from '../config.json'
 
 function App() {
 	const [web3, setWeb3] = useState(null)
-	const [openPunks, setOpenPunks] = useState(null)
+	const [funkyCats, setFunkyCats] = useState(null)
 
 	const [supplyAvailable, setSupplyAvailable] = useState(0)
+	const [mintAmount, setMintAmount] = useState(1)
 
 	const [account, setAccount] = useState(null)
 	const [networkId, setNetworkId] = useState(null)
@@ -43,19 +44,19 @@ function App() {
 	const loadBlockchainData = async (_web3, _account, _networkId) => {
 		// Fetch Contract, Data, etc.
 		try {
-			const openPunks = new _web3.eth.Contract(OpenPunks.abi, OpenPunks.networks[_networkId].address)
-			setOpenPunks(openPunks)
+			const funkyCats = new _web3.eth.Contract(FunkyCats.abi, FunkyCats.networks[_networkId].address)
+			setFunkyCats(funkyCats)
 
-			const maxSupply = await openPunks.methods.maxSupply().call()
-			const totalSupply = await openPunks.methods.totalSupply().call()
+			const maxSupply = await funkyCats.methods.maxSupply().call()
+			const totalSupply = await funkyCats.methods.totalSupply().call()
 			setSupplyAvailable(maxSupply - totalSupply)
 
-			const allowMintingAfter = await openPunks.methods.allowMintingAfter().call()
-			const timeDeployed = await openPunks.methods.timeDeployed().call()
+			const allowMintingAfter = await funkyCats.methods.allowMintingAfter().call()
+			const timeDeployed = await funkyCats.methods.timeDeployed().call()
 			setRevealTime((Number(timeDeployed) + Number(allowMintingAfter)).toString() + '000')
 
 			if (_account) {
-				const ownerOf = await openPunks.methods.walletOfOwner(_account).call()
+				const ownerOf = await funkyCats.methods.walletOfOwner(_account).call()
 				setOwnerOf(ownerOf)
 			} else {
 				setOwnerOf([])
@@ -118,32 +119,39 @@ function App() {
 			return
 		}
 
-		if (ownerOf.length > 0) {
-			window.alert('You\'ve already minted!')
-			return
-		}
-
 		// Mint NFT
-		if (openPunks && account) {
+		if (funkyCats && account) {
 			setIsMinting(true)
 			setIsError(false)
 
-			await openPunks.methods.mint(1).send({ from: account, value: 0 })
+			await funkyCats.methods.mint(mintAmount).send({ from: account, value: (mintAmount* (config.VALUE)) })
 				.on('confirmation', async () => {
-					const maxSupply = await openPunks.methods.maxSupply().call()
-					const totalSupply = await openPunks.methods.totalSupply().call()
+					const maxSupply = await funkyCats.methods.maxSupply().call()
+					const totalSupply = await funkyCats.methods.totalSupply().call()
 					setSupplyAvailable(maxSupply - totalSupply)
 
-					const ownerOf = await openPunks.methods.walletOfOwner(account).call()
+					const ownerOf = await funkyCats.methods.walletOfOwner(account).call()
 					setOwnerOf(ownerOf)
 				})
-				.on('error', (error) => {
-					window.alert(error)
+				.on('error', (_error) => {
+					window.alert("Oops, Please try again !!")
+					window.location.reload();
 					setIsError(true)
 				})
 		}
 
 		setIsMinting(false)
+	}
+
+	const handleDecrement = () => {
+		if (mintAmount <= 1) return;
+		setMintAmount(mintAmount - 1);
+	}
+
+	const handleIncrement = () => {
+		if (mintAmount >= 10) return;
+		setMintAmount(mintAmount + 1);
+
 	}
 
 	const cycleImages = async () => {
@@ -166,21 +174,20 @@ function App() {
 			<Navbar web3Handler={web3Handler} account={account} explorerURL={explorerURL} />
 			<main>
 				<section id='welcome' className='welcome'>
-
 					<Row className='header my-3 p-3 mb-0 pb-0'>
 						<Col xs={12} md={12} lg={8} xxl={8}>
-							<h1>Open Punks</h1>
-							<p className='sub-header'>Availble on 11 / 03 / 22</p>
+							<h1>Funky Cats NFT</h1>
+							<p className='sub-header'>Available on 19th March 23</p>
 						</Col>
 						<Col className='flex social-icons'>
-							<a
-								href="https://twitter.com/DappUniversity"
+						    <a
+								href="https://twitter.com/funkycats007"
 								target='_blank'
 								className='circle flex button'>
 								<img src={twitter} alt="Twitter" />
 							</a>
 							<a
-								href="#"
+								href="https://www.instagram.com/funkycats81/"
 								target='_blank'
 								className='circle flex button'>
 								<img src={instagram} alt="Instagram" />
@@ -197,27 +204,26 @@ function App() {
 					<Row className='flex m-3'>
 						<Col md={5} lg={4} xl={5} xxl={4} className='text-center'>
 							<img
-								src={`https://ipfs.io/ipfs/QmNN9ATnagEMrC9V5Up9c8KUrZGDiCBQVS58x3ojktg2Lt/${counter}.png`}
-								alt="Crypto Punk"
+								src={`https://nftstorage.link/ipfs/bafybeihp2bxcvgthvj46emcxn6we3bb6ekjqgwzvpaukzst2md74gjfn6y/${counter}.png`}
+								alt="Funky Cats"
 								className='showcase'
 							/>
 						</Col>
 						<Col md={5} lg={4} xl={5} xxl={4}>
-							{revealTime !== 0 && <Countdown date={currentTime + (revealTime - currentTime)} className='countdown mx-3' />}
+							{/* {revealTime !== 0 && <Countdown date={currentTime + (revealTime - currentTime)} className='countdown mx-3' />} */}
 							<p className='text'>
-								By attending the masterclass, you'll learn how to generate NFT images, upload to IPFS, create your NFT contract, and use OpenSea!
+								A 10,000 collection of Funky Cats is joining the NFT Space and Open Sea. It's a minimal composition of a visual language and feels a real touch of the cats.
+								Each Cat is hand-drawn by our talented artists, creating a variety of cute, whimsical, and playful designs. Each one of these cute cats has its own unique personality, color, and style.
 							</p>
 							<a href="#about" className='button mx-3'>Learn More!</a>
 						</Col>
 					</Row>
-
-				</section>
-				<section id='about' className='about'>
+					<section id='about' className='about'>
 
 					<Row className='flex m-3'>
 						<h2 className='text-center p-3'>About the Collection</h2>
 						<Col md={5} lg={4} xl={5} xxl={4} className='text-center'>
-							<img src={showcase} alt="Multiple Crypto Punks" className='showcase' />
+							<img src={showcase} alt="Multiple Funky Cats" className='showcase' />
 						</Col>
 						<Col md={5} lg={4} xl={5} xxl={4}>
 							{isError ? (
@@ -225,23 +231,30 @@ function App() {
 							) : (
 								<div>
 									<h3>Mint your NFT in</h3>
-									{revealTime !== 0 && <Countdown date={currentTime + (revealTime - currentTime)} className='countdown' />}
+									{/* {revealTime !== 0 && <Countdown date={currentTime + (revealTime - currentTime)} className='countdown' />} */}
 									<ul>
-										<li>1,000 generated punked out images using an art generator</li>
-										<li>Free minting on Goerli testnet</li>
-										<li>Viewable on Opensea shortly after minting</li>
+										<li>10,000 generated funky cats images using an extra-ordinary artwork</li>
+										<li>Viewable on OpenSea shortly after minting</li>
+										<li> You'll also be able to showcase your Cat in your digital wallet, on social media, and in any other creative way you choose</li>
 									</ul>
 
 									{isMinting ? (
 										<Spinner animation="border" className='p-3 m-2' />
 									) : (
+										<div>
+											<div>
+												<button onClick={handleDecrement} className='button p-3'>-</button>
+												<input type="number" value={mintAmount} style={{ width: "60px"}} className='text-center p-3 m-2'/>
+												<button onClick={handleIncrement} className='button p-3'>+</button>
+											</div>
 										<button onClick={mintNFTHandler} className='button mint-button mt-3'>Mint</button>
+										</div>
 									)}
 
 									{ownerOf.length > 0 &&
-										<p><small>View your NFT on
+										<p><small>View your first NFT on
 											<a
-												href={`${openseaURL}/assets/${openPunks._address}/${ownerOf[0]}`}
+												href={`${openseaURL}/assets/${funkyCats._address}/${ownerOf[0]}`}
 												target='_blank'
 												style={{ display: 'inline-block', marginLeft: '3px' }}>
 												OpenSea
@@ -251,24 +264,11 @@ function App() {
 							)}
 						</Col>
 					</Row>
-
-					<Row style={{ marginTop: "100px" }}>
-						<Col>
-							{openPunks &&
-								<a
-									href={`${explorerURL}/address/${openPunks._address}`}
-									target='_blank'
-									className='text-center'>
-									{openPunks._address}
-								</a>
-							}
-						</Col>
-					</Row>
-
 				</section>
+				</section>
+				
 			</main>
 			<footer>
-
 			</footer>
 		</div>
 	)

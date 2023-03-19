@@ -1,5 +1,6 @@
 {
-    "PROJECT_NAME": "open-punks",
+    "PROJECT_NAME": "funky-cats",
+    "VALUE": 99000000000000000,
     "NETWORKS": {
         "1": {
             "name": "Ethereum Mainnet",

@@ -1,4 +1,4 @@
-const OpenPunks = artifacts.require("OpenPunks")
+const FunkyCats = artifacts.require("FunkyCats")
 
 module.exports = async function (deployer) {
 
@@ -7,7 +7,7 @@ module.exports = async function (deployer) {
     const NFT_MINT_DATE = new Date(process.env.NFT_MINT_DATE).getTime().toString().slice(0, 10)
 
     await deployer.deploy(
-        OpenPunks,
+        FunkyCats,
         process.env.PROJECT_NAME,
         process.env.PROJECT_SYMBOL,
         process.env.MINT_COST,
@@ -15,5 +15,7 @@ module.exports = async function (deployer) {
         NFT_MINT_DATE,
         IPFS_IMAGE_METADATA_URI,
         IPFS_HIDDEN_IMAGE_METADATA_URI,
+        process.env.ROYALTY_FEE,
+        process.env.ROYALTY_ADDRESS
     )
 };

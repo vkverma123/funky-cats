@@ -16,10 +16,22 @@ module.exports = {
 					`wss://goerli.infura.io/ws/v3/${process.env.INFURA_API_KEY}` // URL to Ethereum Node
 				)
 			},
-			gasPrice: 60000000000, // 60 Gwei
-			gas: 4000000,
+			gasPrice: 29481110253, // 60 Gwei
+			gas: 30000000,
 			network_id: 5
 		},
+
+		mainnet: {
+			provider: () => new HDWalletProvider([process.env.DEPLOYER_PRIVATE_KEY],
+				`https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`
+				),
+			network_id: 1,
+			gas: 8000000,
+			gasPrice: 20000000000,
+			confirmations: 2,
+			timeoutBlocks: 200,
+			skipDryRun: true,
+		  },
 
 		matic: {
 			provider: function () {
