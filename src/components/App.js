@@ -193,7 +193,7 @@ function App() {
 								<img src={instagram} alt="Instagram" />
 							</a>
 							<a
-								href={`${openseaURL}/collection/${config.PROJECT_NAME}`}
+								href={`${openseaURL}/collection/${config.PROJECT_NAME}-1`}
 								target='_blank'
 								className='circle flex button'>
 								<img src={opensea} alt="Opensea" />
