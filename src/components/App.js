@@ -214,7 +214,7 @@ function App() {
 							<p className='text'>
 								A 10,000 collection of Funky Cats is joining the NFT Space and Open Sea. It's a minimal composition of a visual language and feels a real touch of the cats.
 								Each Cat is hand-drawn by our talented artists, creating a variety of cute, whimsical, and playful designs. Each one of these cute cats has its own unique personality, color, and style.
-                                                                Mint Price: 0.0068 ETH only
+                                                                <br/> Mint Price: 0.0068 ETH only
 							</p>
 							<a href="#about" className='button mx-3'>Learn More!</a>
 						</Col>
