@@ -177,7 +177,7 @@ function App() {
 					<Row className='header my-3 p-3 mb-0 pb-0'>
 						<Col xs={12} md={12} lg={8} xxl={8}>
 							<h1>Funky Cats NFT</h1>
-							<p className='sub-header'>Available from 19th March 23</p>
+							<p className='sub-header'>Available for minting now !</p>
 						</Col>
 						<Col className='flex social-icons'>
 						    <a
